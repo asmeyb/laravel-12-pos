@@ -17,7 +17,8 @@ class PaymentMethodFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->randomElement(['Cash', 'Card', 'Mobile Money']),
+            'description' => $this->faker->paragraph()
         ];
     }
 }
