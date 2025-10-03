@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Item;
+use App\Models\Customer;
+use App\Models\PaymentMethod;
+use App\Models\SalesItem;
 
 class Sale extends Model
 {
@@ -12,21 +16,24 @@ class Sale extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'sale_id',
-        'item_id',
-        'quantity',
-        'price',
-        'created_by',
-        'updated_by',
+        'customer_id',
+        'payment_method_id',
+        'total',
+        'paid_amount',
+        'discount',
     ];
-
-    public function sale()
+    public function customer()
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function item()
+    public function paymentMethod()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function saleItems()
+    {
+        return $this->hasMany(SalesItem::class);
     }
 }
