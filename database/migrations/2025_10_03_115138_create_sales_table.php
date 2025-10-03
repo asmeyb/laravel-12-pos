@@ -18,8 +18,17 @@ return new class extends Migration
             $table->decimal('total', 8, 2);
             $table->decimal('paid_amount', 8, 2);
             $table->decimal('discount', 8, 2)->default(0.00); //flat discount == %5 = $500
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+            // Correct way to handle nullable foreign keys with set null
+            $table->foreignId('created_by')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
+
+            $table->foreignId('updated_by')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
+
             $table->softDeletes();
             $table->timestamps();
         });
