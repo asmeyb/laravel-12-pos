@@ -4,10 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Models\Item;
 
 class User extends Authenticatable
 {
@@ -24,6 +26,59 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    public function createdItems(): HasMany
+    {
+        return $this->hasMany(Item::class, 'created_by');
+    }
+
+    /**
+     * Items this user last updated.
+     */
+    public function updatedItems(): HasMany
+    {
+        return $this->hasMany(Item::class, 'updated_by');
+    }
+
+    public function createdInventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class, 'created_by');
+    }
+
+    /**
+     * Items this user last updated.
+     */
+    public function updatedInventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class, 'updated_by');
+    }
+
+    public function createdCustomers(): HasMany
+    {
+        return $this->hasMany(Customer::class, 'created_by');
+    }
+
+    /**
+     * Items this user last updated.
+     */
+    public function updatedCustomers(): HasMany
+    {
+        return $this->hasMany(Customer::class, 'updated_by');
+    }
+
+    public function createdPaymentMethods(): HasMany
+    {
+        return $this->hasMany(PaymentMethod::class, 'created_by');
+    }
+
+    /**
+     * Items this user last updated.
+     */
+    public function updatedPaymentMethods(): HasMany
+    {
+        return $this->hasMany(PaymentMethod::class, 'updated_by');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

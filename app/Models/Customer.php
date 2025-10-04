@@ -26,5 +26,18 @@ class Customer extends Model
         return $this->hasMany(Sale::class);
     }
 
+     public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * The user who last updated the item.
+     */
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
 
 }

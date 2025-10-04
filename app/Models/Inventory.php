@@ -23,4 +23,18 @@ class Inventory extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * The user who last updated the item.
+     */
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
 }

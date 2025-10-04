@@ -32,4 +32,17 @@ class Item extends Model
     {
         return $this->hasMany(SalesItem::class);
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * The user who last updated the item.
+     */
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }
