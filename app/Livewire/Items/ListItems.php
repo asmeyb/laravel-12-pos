@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Item;
 use Livewire\Component;
 use Filament\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
 
 class ListItems extends Component implements HasActions, HasSchemas, HasTable
 {
@@ -37,6 +38,8 @@ class ListItems extends Component implements HasActions, HasSchemas, HasTable
                                 'inactive' => 'warning',
                                 'active' => 'success',
                                 }),
+                ImageColumn::make('image')
+                ->circular(),
                 TextColumn::make('creator.name')
                      ->label('Created By')
                      ->sortable()
@@ -47,7 +50,9 @@ class ListItems extends Component implements HasActions, HasSchemas, HasTable
                 //
             ])
             ->headerActions([
-                //
+                Action::make('create')
+                ->label('Add New')
+                ->url(fn (): string => route('items.create'))
             ])
             ->recordActions([
                 Action::make('delete')
@@ -58,6 +63,8 @@ class ListItems extends Component implements HasActions, HasSchemas, HasTable
                         Notification::make()->title('Item Deleted Successfully')
                         ->success(), 
                     ),
+                    Action::make('edit')
+                        ->url(fn (Item $record): string => route('item.update', $record))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

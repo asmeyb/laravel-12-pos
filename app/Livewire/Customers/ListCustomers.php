@@ -2,23 +2,21 @@
 
 namespace App\Livewire\Customers;
 
-use App\Models\Customer;
-use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Notifications\Notification;
-use Filament\Schemas\Concerns\InteractsWithSchemas;
-use Filament\Schemas\Contracts\HasSchemas;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
-
-
+use App\Models\Customer;
+use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Illuminate\Contracts\View\View;
+use Filament\Actions\BulkActionGroup;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
 
 class ListCustomers extends Component implements HasActions, HasSchemas, HasTable
 {
@@ -29,37 +27,35 @@ class ListCustomers extends Component implements HasActions, HasSchemas, HasTabl
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn (): Builder => Customer::query())
+            ->query(fn(): Builder => Customer::query())
             ->columns([
                 TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('email')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('creator.name')
-                     ->label('Created By')
-                     ->sortable()
-                     ->searchable(),
+                    ->sortable(),
+                TextColumn::make('phone')
             ])
             ->filters([
                 //
             ])
             ->headerActions([
+                Action::make('create')
+                ->label('Add New Customer')
+                ->url(fn() => route('customers.create'))
+            ])
+            ->recordActions([
                 Action::make('delete')
                     ->requiresConfirmation()
                     ->color('danger')
-                    ->action(fn (Customer $record) => $record->delete())
+                    ->action(fn(Customer $record) => $record->delete())
                     ->successNotification(
-                        Notification::make()->title('Item Deleted Successfully')
-                        ->success(), 
+                        Notification::make()
+                            ->title('Customer Deleted successfully')
+                            ->success()
                     ),
-            ])
-            ->recordActions([
-                //
+                Action::make('edit')
+                    ->url(fn(Customer $record): string => route('customer.update', $record)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
