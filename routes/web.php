@@ -15,6 +15,7 @@ use App\Livewire\Management\EditPaymentMethods;
 use App\Livewire\Management\EditUsers;
 use App\Livewire\Management\ListPaymentMethods;
 use App\Livewire\Management\ListUsers;
+use App\Livewire\POS;
 use App\Livewire\Sales\ListSales;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -50,6 +51,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
+Route::get('/sales/{sale}/receipt', function (\App\Models\Sale $sale) {
+    $sale->load(['saleItems.item', 'customer', 'paymentMethod']);
+    return view('pdf', ['records' => collect([$sale])]);
+})->name('sales.receipt');
+
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/Manage-users', ListUsers::class)->name('users.index');
@@ -73,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/manage-payment-methods', ListPaymentMethods::class)->name('payment.method.index');
     Route::get('/edit-payment-method/{record}',EditPaymentMethods::class)->name('payment-method.update');
     Route::get('/Create-payment-method',CreatePaymentMethod::class)->name('payment-method.create');
+
+    Route::get('/pos',POS::class)->name('pos');
 });
 
 require __DIR__.'/auth.php';

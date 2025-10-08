@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(PaymentMethod::class, 'updated_by');
     }
 
+    public function sales(): HasMany
+{
+    return $this->hasMany(Sale::class, 'created_by');
+}
+
 
     /**
      * The attributes that should be hidden for serialization.

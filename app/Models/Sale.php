@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Item;
 use App\Models\Customer;
@@ -21,6 +22,7 @@ class Sale extends Model
         'total',
         'paid_amount',
         'discount',
+        'created_by'
     ];
     public function customer()
     {
@@ -35,5 +37,10 @@ class Sale extends Model
     public function saleItems()
     {
         return $this->hasMany(SalesItem::class);
+    }
+
+    public function soldBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

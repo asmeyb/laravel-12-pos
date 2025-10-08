@@ -6,6 +6,7 @@ use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
@@ -59,6 +60,12 @@ class CreateInventory extends Component implements HasActions, HasSchemas
         $record = Inventory::create($data);
 
         $this->form->model($record)->saveRelationships();
+
+        Notification::make()
+        ->title('Inventory Created!')
+        ->success()
+        ->body("Inventory created successfully!")
+        ->send();
     }
 
     public function render(): View

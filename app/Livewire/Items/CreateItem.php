@@ -57,7 +57,12 @@ class CreateItem extends Component implements HasForms, HasActions
                                 'inactive' => 'In Active',
                             ])
                             ->default('active')
-                            ->grouped()
+                            ->grouped(),
+                            FileUpload::make('image_path')
+                    ->disk('public')
+                    ->downloadable()
+                    ->openable()
+                    ->image(),
                     ])
             ])
             ->statePath('data')
